@@ -16,7 +16,7 @@ jobs:
       # Random dummy "build" time
       - name: Build
         run: |
-          sleep $(shuf -i 1-20) -n1
+          sleep $(shuf -i 1-20 -n1) 
           
   deploy:
     needs: build
@@ -35,7 +35,7 @@ jobs:
           
       - name: Tests
         run: |
-          sleep $(shuf -i 1-5) -n1
+          sleep $(shuf -i 1-5 -n1) 
       
       - name: Send stats
         uses: int128/datadog-actions-metrics@v1
