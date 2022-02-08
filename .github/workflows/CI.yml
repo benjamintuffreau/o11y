@@ -1,0 +1,46 @@
+name: CI
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Random dummy "build" time
+      - name: Build
+        run: |
+          sleep $(shuf -i 1-20) -n1
+          
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sleep
+        uses: juliangruber/sleep-action@v1
+        with:
+          time: 5s
+          
+      - name: Dummy
+        run: |
+          echo "Hello I'm working from ${{ github.ref }}"
+          echo "My sha is ${{ github.sha }} !"
+          
+      - name: Tests
+        run: |
+          sleep $(shuf -i 1-5) -n1
+      
+      - name: Send stats
+        uses: int128/datadog-actions-metrics@v1
+        with:
+          datadog-api-key: ${{ secrets.DATADOG_API_KEY }}
+          collect-job-metrics: true
+          
+          
